@@ -8,8 +8,61 @@ import ComplaintTable from "./ComplaintTable";
 import { LoginContext } from "../../../../context/Context";
 
 export default function Complaints() {
+	const [data, setData] = useState("");
+	const [getPending, setGetPending] = useState("");
+	const [getReviewed, setGetReviewed] = useState("");
+	const [getUnder, setGetUnder] = useState("");
 	const { loginData } = useContext(LoginContext);
+
+	const getFiledComplaint = async () => {
+		const res = await fetch(`/citizen/complaint/${loginData.validcitizen?._id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const dataComp = await res.json();
+		setData(dataComp.body.length);
+	};
+
+	const getPendingComplaints = async () => {
+		const res = await fetch(`/citizen/complaint/Pending/${loginData.validcitizen?._id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const pending = await res.json();
+		setGetPending(pending);
+	};
+
+	const getReviewedComplaints = async () => {
+		const res = await fetch(`/citizen/complaintss/Reviewed/${loginData.validcitizen?._id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const pending = await res.json();
+		setGetReviewed(pending);
+	};
+
+	const getUnderInvestigation = async () => {
+		const res = await fetch(`/citizen/complaints/ForInvestigation/${loginData.validcitizen?._id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const pending = await res.json();
+		setGetUnder(pending);
+	};
+
 	useEffect(() => {
+		getFiledComplaint();
+		getPendingComplaints();
+		getReviewedComplaints();
+		getUnderInvestigation();
 		const sr = scrollreveal({
 			origin: "bottom",
 			distance: "80px",
@@ -33,11 +86,16 @@ export default function Complaints() {
 			<Navbar />
 			<div className="grid">
 				<div className="row__two">
-					<Analytics />
+					<Analytics data={data} getPending={getPending} getReviewed={getReviewed} getUnder={getUnder} />
 					<FAQ />
 				</div>
 				<div className="row__one">
-					<ComplaintTable />
+					<ComplaintTable
+						getFiledComplaint={getFiledComplaint}
+						getPendingComplaints={getPendingComplaints}
+						getReviewedComplaints={getReviewedComplaints}
+						getUnderInvestigation={getUnderInvestigation}
+					/>
 				</div>
 			</div>
 		</Section>

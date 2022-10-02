@@ -104,13 +104,13 @@ missingpersonRouter.get("/missing-persons/data", async (req, res) => {
 			{
 				"$group": {
 					"_id": "$year",
-					"municipal": {
+					"data": {
 						"$count": {},
 					},
 				},
 			},
 		]);
-		res.send(getMissingCount);
+		res.status(200).json({ getMissingCount });
 	} catch (error) {
 		res.status(404).json(error);
 	}

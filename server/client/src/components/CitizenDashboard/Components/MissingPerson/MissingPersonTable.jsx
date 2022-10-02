@@ -1,50 +1,18 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { SearchOutlined, PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { Button, Input, Space, Table, Modal, Typography, Drawer, Form } from "antd";
 
 import { LoginContext } from "../../../../context/Context";
-import ComplaintForm from "./ComplaintForm";
 
-export default function ComplaintTable(props) {
-	const [data, setData] = useState([]);
-	const searchInput = useRef(null);
-	const { loginData, setLoginData } = useContext(LoginContext);
-	const [loading, setLoading] = useState(false);
-	const [visible, setVisible] = useState(false);
+export default function MissingPersonTable(props) {
 	const [searchText, setSearchText] = useState("");
+	const [visible, setVisible] = useState(false);
 	const [searchedColumn, setSearchedColumn] = useState("");
-	const [viewData, setViewData] = useState(null);
-	const [isView, setIsView] = useState(false);
-	const [pagination, setPagination] = useState({
-		defaultCurrent: 1,
-		pageSize: 6,
-		total: data[0]?.body.length,
-	});
-
-	const { getFiledComplaint, getPendingComplaints, getReviewedComplaints, getUnderInvestigation } = props;
+	const searchInput = useRef(null);
 
 	const [form] = Form.useForm();
-
-	useEffect(() => {
-		fetchData();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const fetchData = async () => {
-		setLoading(true);
-		const res = await fetch(`/citizen/complaint/${loginData.validcitizen?._id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const dataComp = await res.json();
-		setData([dataComp]);
-		setLoading(false);
-	};
 
 	const onClose = () => {
 		setVisible(false);
@@ -146,89 +114,68 @@ export default function ComplaintTable(props) {
 			),
 	});
 
-	const ViewRecord = (record) => {
-		setIsView(true);
-		setViewData(record);
-	};
-
 	const columns = [
 		{
-			title: "ID",
-			dataIndex: "complaintid",
-			key: "complaintid",
+			title: "Name",
+			dataIndex: "name",
+			key: "name",
 			width: "10%",
-			...getColumnSearchProps("complaintid"),
+			...getColumnSearchProps("name"),
 		},
 		{
-			title: "Complainant Name",
-			dataIndex: "complainantname",
-			key: "complainantname",
-			width: "30%",
-			...getColumnSearchProps("complainantname"),
+			title: "Age",
+			dataIndex: "age",
+			key: "age",
+			width: "10%",
 		},
 		{
-			title: "What",
-			dataIndex: "complaint",
-			key: "complaint",
-			width: "20%",
-		},
-		{
-			title: "Where",
+			title: "Address",
 			dataIndex: "address",
 			key: "address",
-			...getColumnSearchProps("address"),
 			width: "20%",
+			...getColumnSearchProps("address"),
 		},
 		{
-			title: "When",
-			dataIndex: "timeAndDate",
-			key: "timeAndDate",
-			width: "30%",
+			title: "Municipal",
+			dataIndex: "municipal",
+			key: "municipal",
+			width: "10%",
 		},
 		{
-			title: "Who(Suspect)",
-			dataIndex: "suspect",
-			key: "suspect",
-			...getColumnSearchProps("suspect"),
-			width: "30%",
+			title: "Contact",
+			dataIndex: "contact",
+			key: "contact",
+			width: "10%",
 		},
 		{
 			title: "Status",
 			dataIndex: "status",
 			key: "status",
-			width: "10%",
+			width: "5%",
 		},
 		{
 			title: (
 				<Button type="primary" shape="round" icon={<PlusCircleOutlined />} onClick={() => setVisible(true)}>
-					File a Complaint
+					File a Missing Person
 				</Button>
 			),
 			dataIndex: "",
 			key: "x",
-			width: "10%",
-			render: (record) => (
-				<Button
-					type="primary"
-					shape="round"
-					icon={<EyeOutlined />}
-					onClick={() => {
-						ViewRecord(record);
-					}}
-				>
+			width: "15%",
+			render: () => (
+				<Button type="primary" icon={<EyeOutlined />}>
 					View
 				</Button>
 			),
 		},
 	];
-
 	return (
 		<Section>
 			<div className="table">
-				<Table columns={columns} dataSource={data[0]?.body} pagination={pagination} loading={loading} />
+				<Table columns={columns} />
 			</div>
 			<Drawer
-				title="File A Complaint"
+				title="File A Missing Person"
 				placement="top"
 				width={500}
 				onClose={onClose}
@@ -239,36 +186,7 @@ export default function ComplaintTable(props) {
 					justifyContent: "center",
 				}}
 				extra={<Space></Space>}
-			>
-				<ComplaintForm
-					onClose={onClose}
-					fetchData={fetchData}
-					getFiledComplaint={getFiledComplaint}
-					getPendingComplaints={getPendingComplaints}
-					getReviewedComplaints={getReviewedComplaints}
-					getUnderInvestigation={getUnderInvestigation}
-				/>
-			</Drawer>
-			<Modal title="Complaint Details" visible={isView} onCancel={() => setIsView(false)} onOk={() => setIsView(false)}>
-				<Typography>Complainant</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.complainantname} disabled />
-				<Typography>Complaint</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.complaint} disabled />
-				<Typography>Address</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.address} disabled />
-				<Typography>Municipal</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.municipal} disabled />
-				<Typography>Time and Date</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.timeAndDate} disabled />
-				<Typography>Witness</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.witness} disabled />
-				<Typography>Victim</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.victim} disabled />
-				<Typography>Suspect</Typography>
-				<Input style={{ marginBottom: "15px" }} value={viewData?.suspect} disabled />
-				<Typography>Status</Typography>
-				<Input value={viewData?.status} disabled />
-			</Modal>
+			></Drawer>
 		</Section>
 	);
 }

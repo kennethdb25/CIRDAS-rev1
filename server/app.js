@@ -1,5 +1,6 @@
 const express = require("express");
 require("./db/conn");
+require("dotenv").config();
 const complaintRouter = require("./routes/complaints/complaintsRouter");
 const signupRouter = require("./routes/signUpRouter/signUpRouter");
 const router = require("./routes/signInRouter/signInRouter");

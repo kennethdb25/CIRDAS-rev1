@@ -6,57 +6,12 @@ import { cardStyles } from "./ReusableStyles";
 import { LoginContext } from "../../../../context/Context";
 
 export default function Analytics() {
-	const [data, setData] = useState("");
-	const [missing, setMissing] = useState("");
-	const [countMissing, setCountMissing] = useState("");
-	const { loginData } = useContext(LoginContext);
-
-	useEffect(() => {
-		getFiledComplaint();
-		getFiledMissingPerson();
-		municipalCountMissingPerson();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const getFiledMissingPerson = async () => {
-		const res = await fetch(`/missing-person/${loginData.validcitizen?._id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const dataMiss = await res.json();
-		setMissing(dataMiss.body.length);
-	};
-
-	const getFiledComplaint = async () => {
-		const res = await fetch(`/citizen/complaint/${loginData.validcitizen?._id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const dataComp = await res.json();
-		setData(dataComp.body.length);
-	};
-
-	const municipalCountMissingPerson = async () => {
-		const res = await fetch(`/missing-person/count/${loginData.validcitizen?.municipal}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const compCount = await res.json();
-		setCountMissing(compCount.getMissingCount);
-	};
-
 	return (
 		<Section>
 			<div className="analytic ">
 				<div className="content">
 					<h4>Filed Missing Person</h4>
-					<h2>{data}</h2>
+					<h2>0</h2>
 				</div>
 				<div className="logo">
 					<BsFileEarmarkMedicalFill />
@@ -68,7 +23,7 @@ export default function Analytics() {
 				</div>
 				<div className="content">
 					<h4>Pending Status</h4>
-					<h2>{missing}</h2>
+					<h2>0</h2>
 				</div>
 			</div>
 			<div className="analytic">
@@ -77,13 +32,13 @@ export default function Analytics() {
 				</div>
 				<div className="content">
 					<h4>Missing Status</h4>
-					<h2>{countMissing}</h2>
+					<h2>0</h2>
 				</div>
 			</div>
 			<div className="analytic ">
 				<div className="content">
 					<h4>Found Status</h4>
-					<h2>5</h2>
+					<h2>0</h2>
 				</div>
 				<div className="logo">
 					<BiGroup />

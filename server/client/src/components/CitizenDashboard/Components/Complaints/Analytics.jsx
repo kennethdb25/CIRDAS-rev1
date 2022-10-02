@@ -1,55 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { BsFileEarmarkMedicalFill, BsFillFileEarmarkXFill } from "react-icons/bs";
 import { BiGroup } from "react-icons/bi";
 import { cardStyles } from "./ReusableStyles";
-import { LoginContext } from "../../../../context/Context";
 
-export default function Analytics() {
-	const [data, setData] = useState("");
-	const [missing, setMissing] = useState("");
-	const [countMissing, setCountMissing] = useState("");
-	const { loginData } = useContext(LoginContext);
-
-	useEffect(() => {
-		getFiledComplaint();
-		getFiledMissingPerson();
-		municipalCountMissingPerson();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	const getFiledMissingPerson = async () => {
-		const res = await fetch(`/missing-person/${loginData.validcitizen?._id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const dataMiss = await res.json();
-		setMissing(dataMiss.body.length);
-	};
-
-	const getFiledComplaint = async () => {
-		const res = await fetch(`/citizen/complaint/${loginData.validcitizen?._id}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const dataComp = await res.json();
-		setData(dataComp.body.length);
-	};
-
-	const municipalCountMissingPerson = async () => {
-		const res = await fetch(`/missing-person/count/${loginData.validcitizen?.municipal}`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-		const compCount = await res.json();
-		setCountMissing(compCount.getMissingCount);
-	};
+export default function Analytics(props) {
+	const { data, getPending, getReviewed, getUnder } = props;
 
 	return (
 		<Section>
@@ -68,7 +24,7 @@ export default function Analytics() {
 				</div>
 				<div className="content">
 					<h4>Pending Complaints</h4>
-					<h2>{missing}</h2>
+					<h2>{getPending}</h2>
 				</div>
 			</div>
 			<div className="analytic">
@@ -77,13 +33,13 @@ export default function Analytics() {
 				</div>
 				<div className="content">
 					<h4>Reviewed Complaints</h4>
-					<h2>{countMissing}</h2>
+					<h2>{getReviewed}</h2>
 				</div>
 			</div>
 			<div className="analytic ">
 				<div className="content">
-					<h4>Under Investigation</h4>
-					<h2>400</h2>
+					<h4>For Investigation</h4>
+					<h2>{getUnder}</h2>
 				</div>
 				<div className="logo">
 					<BiGroup />

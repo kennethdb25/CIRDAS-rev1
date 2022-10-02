@@ -40,8 +40,6 @@ complaintRouter.post("/citizen/complaint", async (req, res) => {
 
 complaintRouter.get("/citizen/complaint", async (req, res) => {
 	try {
-		const complaintcount = await complaintSchema.find().count();
-		console.log(complaintcount + 1);
 		const complaint = await complaintSchema.find();
 		res.status(200).json({ status: 200, body: complaint });
 	} catch (error) {
@@ -55,6 +53,33 @@ complaintRouter.get("/citizen/complaint/:id", async (req, res) => {
 	try {
 		const getComplaintById = await complaintSchema.find({ id: req.params.id });
 		res.status(200).json({ status: 200, body: getComplaintById });
+	} catch (error) {
+		res.status(404).json(error);
+	}
+});
+
+complaintRouter.get("/citizen/complaint/:status/:id", async (req, res) => {
+	try {
+		const getComplaintById = await complaintSchema.find({ id: req.params.id, status: "Pending" }).count();
+		res.status(200).json(getComplaintById);
+	} catch (error) {
+		res.status(404).json(error);
+	}
+});
+
+complaintRouter.get("/citizen/complaintss/:status/:id", async (req, res) => {
+	try {
+		const getComplaintById = await complaintSchema.find({ id: req.params.id, status: "Reviewed" }).count();
+		res.status(200).json(getComplaintById);
+	} catch (error) {
+		res.status(404).json(error);
+	}
+});
+
+complaintRouter.get("/citizen/complaints/:status/:id", async (req, res) => {
+	try {
+		const getCountByStatus = await complaintSchema.find({ id: req.params.id, status: "ForInvestigation" }).count();
+		res.status(200).json(getCountByStatus);
 	} catch (error) {
 		res.status(404).json(error);
 	}

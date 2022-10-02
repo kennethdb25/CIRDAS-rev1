@@ -18,7 +18,7 @@ const ComplaintForm = (props) => {
 
 	const classes = useStyles();
 
-	const { onClose, fetchData } = props;
+	const { onClose, fetchData, getFiledComplaint, getReviewedComplaints, getPendingComplaints, getUnderInvestigation } = props;
 
 	const onFinish = async (values) => {
 		const data = await fetch("/citizen/complaint", {
@@ -33,6 +33,10 @@ const ComplaintForm = (props) => {
 			toast.success("Filed Successfully", { position: toast.POSITION.TOP_CENTER, autoClose: 1000 });
 			onClose();
 			fetchData();
+			getFiledComplaint();
+			getPendingComplaints();
+			getReviewedComplaints();
+			getUnderInvestigation();
 			form.resetFields();
 		} else {
 			toast.error(res.error, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 });

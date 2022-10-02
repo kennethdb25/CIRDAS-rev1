@@ -4,6 +4,7 @@ import scrollreveal from "scrollreveal";
 import Navbar from "./Navbar";
 import Analytics from "./Analytics";
 import FAQ from "./FAQ";
+import MissingPersonTable from "./MissingPersonTable";
 
 export default function MissingPerson() {
 	useEffect(() => {
@@ -33,7 +34,9 @@ export default function MissingPerson() {
 					<Analytics />
 					<FAQ />
 				</div>
-				<div className="row__one"></div>
+				<div className="row__one">
+					<MissingPersonTable />
+				</div>
 			</div>
 		</Section>
 	);

@@ -5,5 +5,4 @@ module.exports = {
 	cookieKeyCitizen: process.env.COOKIE_KEY_CITIZEN,
 	cookieKeyPolice: process.env.COOKIE_KEY_POLICE,
 	cookieKeyAdmin: process.env.COOKIE_KEY_ADMIN,
-	redirectDomain: process.env.REDIRECT_DOMAIN,
 };

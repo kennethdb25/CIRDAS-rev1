@@ -131,7 +131,7 @@ const ComplaintForm = (props) => {
 									{ min: 11 },
 								]}
 							>
-								<Input placeholder="Enter your last name" />
+								<Input placeholder="Enter your contact number" />
 							</Form.Item>
 						</Col>
 						<Col xs={{ span: 24 }} md={{ span: 8 }}>
@@ -301,7 +301,7 @@ const ComplaintForm = (props) => {
 								rules={[
 									{
 										required: true,
-										message: "Please enter witness name!",
+										message: "Please enter how!",
 									},
 									{
 										pattern: /^[a-zA-Z_ ]*$/,

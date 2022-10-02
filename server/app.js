@@ -14,7 +14,7 @@ const policeforgot = require("./routes/forgot-password/police-forgotpassword/for
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());
@@ -33,6 +33,6 @@ app.use(policeforgot);
 
 app.use("/uploads", express.static("./uploads"));
 
-app.listen(port, () => {
+app.listen(PORT, () => {
 	console.log(`Server is running at port: ${port}`);
 });

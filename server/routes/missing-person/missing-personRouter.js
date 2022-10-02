@@ -27,33 +27,43 @@ const upload = multer({
 
 missingpersonRouter.post("/missing-person", upload.single("photo"), async (req, res) => {
 	const { filename } = req.file;
-	const { id, name, age, address, year, municipal, description, contact, status } = req.body;
+	const { id, contactperson, fullname, dob, age, gender, race, eyes, hair, height, weight, wearing, address, municipal, characteristics, contact, lastseen } =
+		req.body;
 
-	if (!id || !name || !age || !address || !year || !municipal || !description || !contact || !status || !filename) {
-		res.status(422).json({ error: "Fill all required details" });
-	} else {
-		try {
-			const finalMissingPerson = new missingPersonSchema({
-				id,
-				name,
-				age,
-				imgpath: filename,
-				address,
-				year,
-				timeAndDate: `${new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()}`,
-				municipal,
-				description,
-				contact,
-				status,
-			});
+	const missingpersoncount = await missingPersonSchema.find().count();
 
-			const storeData = await finalMissingPerson.save();
+	try {
+		const finalMissingPerson = new missingPersonSchema({
+			id,
+			contactperson,
+			missingpersonid: `MP-${missingpersoncount + 1}`,
+			fullname,
+			dob,
+			age,
+			gender,
+			race,
+			eyes,
+			hair,
+			height,
+			weight,
+			wearing,
+			imgpath: filename,
+			address,
+			year: `${new Date().getFullYear()}`,
+			timeAndDate: `${new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()}`,
+			municipal,
+			characteristics,
+			contact,
+			lastseen,
+			status: "Pending",
+		});
 
-			res.status(201).json({ status: 201, storeData });
-		} catch (error) {
-			res.status(422).json(error);
-			console.log("catch block error");
-		}
+		const storeData = await finalMissingPerson.save();
+
+		res.status(201).json({ status: 201, storeData });
+	} catch (error) {
+		res.status(422).json(error);
+		console.log("catch block error");
 	}
 });
 

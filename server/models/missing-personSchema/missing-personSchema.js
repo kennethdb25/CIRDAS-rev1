@@ -5,13 +5,62 @@ const missingPersonSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	name: {
+	missingpersonid: {
+		type: String,
+		required: true,
+	},
+	contactperson: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	fullname: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	dob: {
 		type: String,
 		required: true,
 		trim: true,
 	},
 	age: {
-		type: Number,
+		type: String,
+		required: true,
+		trim: true,
+	},
+	gender: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	race: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	eyes: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	hair: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	height: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	weight: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	wearing: {
+		type: String,
 		required: true,
 		trim: true,
 	},
@@ -38,12 +87,17 @@ const missingPersonSchema = new mongoose.Schema({
 		required: true,
 		trim: true,
 	},
-	description: {
+	characteristics: {
 		type: String,
 		required: true,
 		trim: true,
 	},
 	contact: {
+		type: String,
+		required: true,
+		trim: true,
+	},
+	lastseen: {
 		type: String,
 		required: true,
 		trim: true,

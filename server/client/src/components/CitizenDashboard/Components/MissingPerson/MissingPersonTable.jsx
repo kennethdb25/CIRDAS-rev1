@@ -1,18 +1,46 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { SearchOutlined, PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { Button, Input, Space, Table, Modal, Typography, Drawer, Form } from "antd";
 
 import { LoginContext } from "../../../../context/Context";
+import MissingPersonForm from "./MissingPersonForm";
 
 export default function MissingPersonTable(props) {
+	const [data, setData] = useState([]);
 	const [searchText, setSearchText] = useState("");
 	const [visible, setVisible] = useState(false);
 	const [searchedColumn, setSearchedColumn] = useState("");
 	const searchInput = useRef(null);
+	const { loginData, setLoginData } = useContext(LoginContext);
+	const [loading, setLoading] = useState(false);
+	const [pagination, setPagination] = useState({
+		defaultCurrent: 1,
+		pageSize: 6,
+		total: data[0]?.body.length,
+	});
 
 	const [form] = Form.useForm();
+
+	useEffect(() => {
+		fetchData();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const fetchData = async () => {
+		setLoading(true);
+		const res = await fetch(`/missing-person/${loginData.validcitizen?._id}`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+		const dataComp = await res.json();
+		setData([dataComp]);
+		setLoading(false);
+		console.log(dataComp);
+	};
 
 	const onClose = () => {
 		setVisible(false);
@@ -163,7 +191,7 @@ export default function MissingPersonTable(props) {
 			key: "x",
 			width: "15%",
 			render: () => (
-				<Button type="primary" icon={<EyeOutlined />}>
+				<Button type="primary" shape="round" icon={<EyeOutlined />}>
 					View
 				</Button>
 			),
@@ -172,7 +200,7 @@ export default function MissingPersonTable(props) {
 	return (
 		<Section>
 			<div className="table">
-				<Table columns={columns} />
+				<Table columns={columns} dataSource={data[0]?.body} pagination={pagination} loading={loading} />
 			</div>
 			<Drawer
 				title="File A Missing Person"
@@ -186,7 +214,9 @@ export default function MissingPersonTable(props) {
 					justifyContent: "center",
 				}}
 				extra={<Space></Space>}
-			></Drawer>
+			>
+				<MissingPersonForm />
+			</Drawer>
 		</Section>
 	);
 }

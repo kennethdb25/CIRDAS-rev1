@@ -7,6 +7,7 @@ const PATH = {
 	// POLICE
 	POLICELOGIN: "/user-police",
 	POLICEFORGOTPASSWORD: "/user-police/forgot-password",
+	POLICEDASHBOARD: "/user-police/dashboard",
 
 	// ADMIN
 	ADMINLOGIN: "/user-admin",

@@ -26,7 +26,7 @@ const CitizenContent = () => {
 				placement="left"
 				width={600}
 				onClose={onClose}
-				visible={visible}
+				open={visible}
 				height={600}
 				style={{
 					display: "flex",

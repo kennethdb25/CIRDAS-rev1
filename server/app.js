@@ -34,5 +34,5 @@ app.use(policeforgot);
 app.use("/uploads", express.static("./uploads"));
 
 app.listen(PORT, () => {
-	console.log(`Server is running at port: ${port}`);
+	console.log(`Server is running at port: ${PORT}`);
 });

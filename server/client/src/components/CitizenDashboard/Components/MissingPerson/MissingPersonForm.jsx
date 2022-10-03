@@ -1,31 +1,30 @@
 import React, { useContext } from "react";
-import { Button, Form, Input, Select, Row, Col, message, Typography, DatePicker, Radio, Upload } from "antd";
+import { Button, Form, Input, Select, Row, Col, message, DatePicker, Radio, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Box } from "@mui/material";
 import "antd/dist/antd.min.css";
 import { toast } from "react-toastify";
 import { LoginContext } from "../../../../context/Context";
 import { MunicipalData } from "../../../../data/CitizensData";
-import useStyles from "../../../Login/CitizenContent/styles";
 
 const { TextArea } = Input;
 
-const MissingPersonForm = () => {
+const MissingPersonForm = (props) => {
 	const [form] = Form.useForm();
 	const { loginData } = useContext(LoginContext);
 	const contactperson = `${loginData.validcitizen?.firstName} ${loginData.validcitizen?.lastName}`;
-	const contactpersonid = `${loginData.validcitizen?._id}`;
-	const timeAndDate = `${new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()}`;
-	const classes = useStyles();
+	const complainantid = `${loginData.validcitizen?._id}`;
+
+	const { onClose, fetchData, fetchAllData } = props;
 
 	const onFinish = async (values) => {
 		const newData = new FormData();
+		newData.append("id", values.id);
 		newData.append("photo", values.photo.file.originFileObj);
 		newData.append("address", values.address);
 		newData.append("age", values.age);
 		newData.append("contact", values.contact);
 		newData.append("contactperson", values.contactperson);
-		newData.append("description", values.description);
+		newData.append("characteristics", values.description);
 		newData.append("dob", values.dob);
 		newData.append("eyes", values.eyes);
 		newData.append("fullname", values.fullname);
@@ -36,7 +35,7 @@ const MissingPersonForm = () => {
 		newData.append("municipal", values.municipal);
 		newData.append("race", values.race);
 		newData.append("wearing", values.wearing);
-		newData.append("wearing", values.wearing);
+		newData.append("weight", values.weight);
 
 		const data = await fetch("/missing-person", {
 			method: "POST",
@@ -45,7 +44,13 @@ const MissingPersonForm = () => {
 
 		const res = await data.json();
 		if (res.status === 201) {
-			toast.success("Registered Successfully", { position: toast.POSITION.TOP_CENTER });
+			toast.success("Filed Successfully", { position: toast.POSITION.TOP_CENTER, autoClose: 1000 });
+			onClose();
+			fetchData();
+			fetchAllData();
+			form.resetFields();
+		} else {
+			toast.error(res.error, { position: toast.POSITION.TOP_CENTER });
 		}
 	};
 
@@ -85,7 +90,6 @@ const MissingPersonForm = () => {
 		const imgWindow = window.open(src);
 		imgWindow?.document.write(image.outerHTML);
 	};
-
 	return (
 		<Form
 			orm
@@ -93,7 +97,7 @@ const MissingPersonForm = () => {
 			labelCol={{
 				span: 8,
 			}}
-			initialValues={{ contactperson: contactperson, id: contactpersonid, timeAndDate: timeAndDate }}
+			initialValues={{ id: complainantid, contactperson: contactperson }}
 			layout="horizontal"
 			onFinish={onFinish}
 			onFinishFailed={onFinishFailed}
@@ -538,6 +542,14 @@ const MissingPersonForm = () => {
 					<Button type="primary" htmlType="submit">
 						File Missing Person
 					</Button>
+				</Col>
+				<Col xs={{ span: 24 }} md={{ span: 24 }}>
+					<Form.Item name="id">
+						<Input hidden defaultValue={complainantid} />
+					</Form.Item>
+				</Col>
+				<Col xs={{ span: 24 }} md={{ span: 24 }}>
+					<Input hidden />
 				</Col>
 				<Col xs={{ span: 0 }} md={{ span: 4 }}></Col>
 			</Row>

@@ -53,8 +53,22 @@ export default function Analytics() {
 
 	return (
 		<Section>
-			<div className="analytic "></div>
-			<div className="analytic"></div>
+			<div className="analytic ">
+				<iframe
+					className="iframe"
+					style={{ height: "200px", border: "none", borderRadius: "2px", boxShadow: "0 2px 10px 0 rgba(70, 76, 79, .2)" }}
+					title="Wanted Person Status Rate"
+					src="https://charts.mongodb.com/charts-cirdas-ngmsy/embed/charts?id=63076239-5045-4e80-84ac-660c238b3510&maxDataAge=10&theme=light&autoRefresh=true"
+				></iframe>
+			</div>
+			<div className="analytic">
+				<iframe
+					className="iframe"
+					style={{ height: "200px", border: "none", borderRadius: "2px", boxShadow: "0 2px 10px 0 rgba(70, 76, 79, .2)" }}
+					title="Total Count of Wanted Person"
+					src="https://charts.mongodb.com/charts-cirdas-ngmsy/embed/charts?id=6326c127-ebcf-4825-8adf-864e79b72889&maxDataAge=10&theme=light&autoRefresh=true"
+				></iframe>
+			</div>
 		</Section>
 	);
 }
@@ -64,7 +78,7 @@ const Section = styled.section`
 	gap: 1rem;
 	.analytic {
 		${cardStyles};
-		padding: 1rem;
+		padding: 0.5rem;
 		display: flex;
 		justify-content: space-evenly;
 		align-items: center;
@@ -76,6 +90,8 @@ const Section = styled.section`
 			svg {
 				color: white;
 			}
+		}
+		
 		}
 		.logo {
 			background-color: black;

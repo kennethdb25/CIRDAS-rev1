@@ -4,6 +4,7 @@ import scrollreveal from "scrollreveal";
 import Navbar from "./Navbar";
 import Analytics from "./Analytics";
 import FAQ from "./FAQ";
+import WantedPersonTable from "./WantedPersonTable";
 
 export default function WantedPerson() {
 	useEffect(() => {
@@ -33,7 +34,9 @@ export default function WantedPerson() {
 					<Analytics />
 					<FAQ />
 				</div>
-				<div className="row__one"></div>
+				<div className="row__one">
+					<WantedPersonTable />
+				</div>
 			</div>
 		</Section>
 	);

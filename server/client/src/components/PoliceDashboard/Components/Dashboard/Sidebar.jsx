@@ -3,37 +3,29 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Drawer, Space } from "antd";
 import { FiLogOut } from "react-icons/fi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdLocalPolice } from "react-icons/md";
 import { VscChromeClose } from "react-icons/vsc";
 import scrollreveal from "scrollreveal";
 import Dashboard from "./Dashboard";
-import Complaints from "../Complaints/Complaints";
 import { LoginContext } from "../../../../context/Context";
 import { ToastContainer, toast } from "react-toastify";
 import { UilEstate, UilClipboardAlt, UilSearch, UilUsersAlt, UilBuilding, UilSetting } from "@iconscout/react-unicons";
-import MissingPerson from "../MissingPerson/MissingPerson";
-import WantedPerson from "../WantedPerson/WantedPerson";
-import PoliceStationDetails from "../PoliceStationDetails/PoliceStationDetails";
-import AccountForm from "./AccountForm";
 
 export default function Sidebar() {
 	const { loginData, setLoginData } = useContext(LoginContext);
 	const [currentLink, setCurrentLink] = useState(1);
 	const [navbarState, setNavbarState] = useState(false);
-
-	const [visible, setVisible] = useState(false);
 	const html = document.querySelector("html");
 	html.addEventListener("click", () => setNavbarState(false));
 
 	const history = useNavigate();
 
-	const logoutCitizenUser = async () => {
-		let token = localStorage.getItem("citizenUserDataToken");
+	const logoutPoliceUser = async () => {
+		let token = localStorage.getItem("policeUserDataToken");
 
-		const res = await fetch("/citizen/logout", {
+		const res = await fetch("/police/logout", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -48,18 +40,18 @@ export default function Sidebar() {
 		if (dataPol.status === 201) {
 			toast.warn("Logging Out", { position: toast.POSITION.TOP_CENTER });
 			setTimeout(() => {
-				localStorage.removeItem("citizenUserDataToken");
-				history("/");
+				localStorage.removeItem("policeUserDataToken");
+				history("/user-police");
 			}, 4000);
 		} else {
 			toast.error("Error Occured", { position: toast.POSITION.TOP_CENTER });
 		}
 	};
 
-	const CitizenDasboardValid = async () => {
-		let token = localStorage.getItem("citizenUserDataToken");
+	const PoliceDasboardValid = async () => {
+		let token = localStorage.getItem("policeUserDataToken");
 
-		const res = await fetch("/validcitizen", {
+		const res = await fetch("/validpolice", {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -73,17 +65,12 @@ export default function Sidebar() {
 		} else {
 			console.log("user verified");
 			setLoginData(getData);
-			history("/user-citizen/dashboard");
+			history("/user-police/dashboard");
 		}
 	};
 
-	const onClose = () => {
-		setVisible(false);
-		setCurrentLink(1);
-	};
-
 	useEffect(() => {
-		CitizenDasboardValid();
+		PoliceDasboardValid();
 		const sr = scrollreveal({
 			origin: "left",
 			distance: "80px",
@@ -162,14 +149,7 @@ export default function Sidebar() {
 									<span> Police Station Location</span>
 								</a>
 							</li>
-							<li
-								key={6}
-								className={currentLink === 6 ? "active" : "none"}
-								onClick={() => {
-									setCurrentLink(6);
-									setVisible(true);
-								}}
-							>
+							<li key={6} className={currentLink === 6 ? "active" : "none"} onClick={() => setCurrentLink(6)}>
 								<a>
 									<UilSetting />
 									<span> Settings</span>
@@ -185,7 +165,7 @@ export default function Sidebar() {
 						<span
 							className="logout"
 							onClick={() => {
-								logoutCitizenUser();
+								logoutPoliceUser();
 							}}
 						>
 							Logout
@@ -226,14 +206,7 @@ export default function Sidebar() {
 								<span> Police Station Location</span>
 							</a>
 						</li>
-						<li
-							key={6}
-							className={currentLink === 6 ? "active" : "none"}
-							onClick={() => {
-								setCurrentLink(6);
-								setVisible(true);
-							}}
-						>
+						<li key={6} className={currentLink === 6 ? "active" : "none"} onClick={() => setCurrentLink(6)}>
 							<a>
 								<UilSetting />
 								<span> Settings</span>
@@ -245,7 +218,7 @@ export default function Sidebar() {
 								<span
 									className="logout"
 									onClick={() => {
-										logoutCitizenUser();
+										logoutPoliceUser();
 									}}
 								>
 									Logout
@@ -258,38 +231,6 @@ export default function Sidebar() {
 			{currentLink === 1 ? (
 				<>
 					<Dashboard />
-				</>
-			) : currentLink === 2 ? (
-				<>
-					<Complaints />
-				</>
-			) : currentLink === 3 ? (
-				<>
-					<MissingPerson />
-				</>
-			) : currentLink === 4 ? (
-				<>
-					<WantedPerson />
-				</>
-			) : currentLink === 5 ? (
-				<>
-					<PoliceStationDetails />
-				</>
-			) : currentLink === 6 ? (
-				<>
-					<Drawer
-						title="Account Details"
-						placement="top"
-						width={500}
-						onClose={onClose}
-						open={visible}
-						height={630}
-						style={{
-							display: "flex",
-							justifyContent: "center",
-						}}
-						extra={<Space></Space>}
-					></Drawer>
 				</>
 			) : null}
 		</>

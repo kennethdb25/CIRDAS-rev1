@@ -4,6 +4,7 @@ const missingPersonSchema = new mongoose.Schema({
 	id: {
 		type: String,
 		required: true,
+		trim: true,
 	},
 	missingpersonid: {
 		type: String,

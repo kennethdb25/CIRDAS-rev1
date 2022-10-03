@@ -11,9 +11,9 @@ const { TextArea } = Input;
 
 const ComplaintForm = (props) => {
 	const [form] = Form.useForm();
-	const { loginData } = useContext(LoginContext);
+	const { loginData, setLoginData } = useContext(LoginContext);
 	const complainantname = `${loginData.validcitizen?.firstName} ${loginData.validcitizen?.lastName}`;
-	const complainantid = `${loginData.validcitizen?._id}`;
+	const complainantid = `${loginData.validcitizen._id}`;
 	const timeAndDate = `${new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()}`;
 
 	const classes = useStyles();

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState, useContext } from "react";
 import styled from "styled-components";
-import { SearchOutlined, PlusCircleOutlined, EyeOutlined } from "@ant-design/icons";
+import { SearchOutlined, PlusCircleOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { Button, Input, Space, Table, Modal, Typography, Drawer, Form } from "antd";
 
@@ -208,16 +208,27 @@ export default function ComplaintTable(props) {
 			key: "x",
 			width: "10%",
 			render: (record) => (
-				<Button
-					type="primary"
-					shape="round"
-					icon={<EyeOutlined />}
-					onClick={() => {
-						ViewRecord(record);
-					}}
-				>
-					View
-				</Button>
+				<>
+					<div style={{ display: "flex" }}>
+						<Button
+							type="primary"
+							shape="round"
+							icon={<EyeOutlined />}
+							onClick={() => {
+								ViewRecord(record);
+							}}
+						>
+							View
+						</Button>
+						{record.status === "Pending" ? (
+							<Button type="success" shape="round" icon={<EditOutlined />}>
+								Edit
+							</Button>
+						) : (
+							<></>
+						)}
+					</div>
+				</>
 			),
 		},
 	];
@@ -232,7 +243,7 @@ export default function ComplaintTable(props) {
 				placement="top"
 				width={500}
 				onClose={onClose}
-				visible={visible}
+				open={visible}
 				height={630}
 				style={{
 					display: "flex",
@@ -249,7 +260,7 @@ export default function ComplaintTable(props) {
 					getUnderInvestigation={getUnderInvestigation}
 				/>
 			</Drawer>
-			<Modal title="Complaint Details" visible={isView} onCancel={() => setIsView(false)} onOk={() => setIsView(false)}>
+			<Modal title="Complaint Details" open={isView} onCancel={() => setIsView(false)} onOk={() => setIsView(false)}>
 				<Typography>Complainant</Typography>
 				<Input style={{ marginBottom: "15px" }} value={viewData?.complainantname} disabled />
 				<Typography>Complaint</Typography>

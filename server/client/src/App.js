@@ -4,7 +4,16 @@ import { LoginContext } from "./context/Context";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import PATH from "./path/Path";
-import { AdminLogin, CitizenDashboardContent, CitizenForgotPassword, CitizenLogin, NotFoundContent, PoliceForgotPassword, PoliceLogin } from "./pages/Pages";
+import {
+	AdminLogin,
+	CitizenDashboardContent,
+	CitizenForgotPassword,
+	CitizenLogin,
+	NotFoundContent,
+	PoliceDashboardContent,
+	PoliceForgotPassword,
+	PoliceLogin,
+} from "./pages/Pages";
 
 function App() {
 	const [data, setData] = useState("");
@@ -92,6 +101,7 @@ function App() {
 						<Route path={PATH.FORGOTPASSWORD} element={<CitizenForgotPassword />} />
 						<Route path={PATH.POLICEFORGOTPASSWORD} element={<PoliceForgotPassword />} />
 						<Route path={PATH.CITIZENDASHBOARD} element={<CitizenDashboardContent />} />
+						<Route path={PATH.POLICEDASHBOARD} element={<PoliceDashboardContent />} />
 						<Route path={PATH.PAGENOTFOUND} element={<NotFoundContent />} />
 					</Routes>
 				</>
